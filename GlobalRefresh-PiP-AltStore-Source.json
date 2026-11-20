@@ -1,34 +1,28 @@
 {
-  "name": "全局高刷APP更新源",
-  "identifier": "com.yoroin.globalrefresh.source",
-  "subtitle": "全局高刷悬浮窗官方版本更新",
-  "description": "跟踪 Yoroin/GlobalRefresh-PiP GitHub Releases 正式版。IPA 为开发者提供的通用未签名版本，需要使用自己的 Apple ID 或证书签名安装。",
-  "iconURL": "https://raw.githubusercontent.com/Yoroin/GlobalRefresh-PiP/master/assets/app-icon.png",
-  "website": "https://github.com/Yoroin/GlobalRefresh-PiP",
-  "tintColor": "#2688FF",
+  "name": "heyyypan iOS App Sources",
+  "identifier": "com.heyyypan.ios-app-sources",
+  "subtitle": "LiveContainer / SideStore 自动更新源",
+  "description": "自动跟踪 Yoroin/GlobalRefresh-PiP 最新正式版。",
+  "website": "https://github.com/heyyypan/iOS-App-Sources",
   "apps": [
     {
       "name": "全局高刷",
       "bundleIdentifier": "com.yoroin.globalrefresh",
       "developerName": "Yoroin",
-      "subtitle": "全局高刷悬浮窗 · ProMotion 辅助工具",
-      "localizedDescription": "基于 iOS 画中画的悬浮窗工具，可辅助部分 ProMotion 设备及应用获得更高刷新率表现。支持悬浮窗隐藏、后台 PiP 保活及与其他画中画并存保护。实际刷新率和后台存活效果取决于设备、系统及前台应用，不保证固定 120Hz 或永久后台运行。",
-      "iconURL": "https://raw.githubusercontent.com/Yoroin/GlobalRefresh-PiP/master/assets/app-icon.png",
-      "tintColor": "#2688FF",
-      "category": "utilities",
+      "subtitle": "全局高刷悬浮窗",
+      "localizedDescription": "基于 iOS 画中画的悬浮窗工具，可辅助部分 ProMotion 设备获得更高刷新率表现。",
       "developerWebsite": "https://github.com/Yoroin/GlobalRefresh-PiP",
-      "patreonURL": "https://github.com/Yoroin/GlobalRefresh-PiP",
       "versions": [
         {
-          "version": "1.1.1",
-          "buildVersion": "2026100902",
-          "date": "2026-10-09T00:00:00Z",
-          "downloadURL": "https://github.com/Yoroin/GlobalRefresh-PiP/releases/download/v1.1.1/GlobalRefresh_1.1.1_2026100902_unsigned.ipa",
-          "localizedDescription": "• 优化默认 VideoCall 悬浮窗方案，改善部分锁 60 游戏和 B 站弹幕卡顿\n• 新增悬浮窗共存保护，可与其他画中画同时运行\n• 修复悬浮窗未拖至侧边导致的无法熄屏问题\n• 适配 iPhone Duo\n• 优化一键 0.1pt 隐藏入口\n• 减少仅 PiP 模式的后台资源开销并补充系统诊断",
+          "version": "1.1.2",
+          "buildVersion": "2026112009",
+          "date": "2026-11-20T10:21:33Z",
+          "downloadURL": "https://github.com/Yoroin/GlobalRefresh-PiP/releases/download/v1.1.2/GlobalRefresh_1.1.2_2026112009_unsigned.ipa",
+          "size": 7870265,
+          "localizedDescription": "# 全局高刷 1.1.2（26.11.20）\n\n本版本提供正式版通用未签名 IPA，可通过牛蛙助手、AltStore、Sideloadly 等工具自行签名安装。\n\n构建号：`2026112009`\n\nIPA 文件：`GlobalRefresh_1.1.2_2026112009_unsigned.ipa`\n\nSHA-256：`602ea24a09b57c16681cfc3ba81b427afb8a824ec69a5a06567432addd237b87`\n\n## 更新内容\n\n- \\* 修复 iOS 16 及以上悬浮窗关闭按钮偶尔重新出现的问题（即屏幕中间的水滴图标）\n- \\* 修复部分 iOS 15 设备无法启动悬浮窗的问题，恢复原生启动流程\n- 优化画中画并存，增加当前会话内的检查和有限补试；系统暂时挂起悬浮窗时，不再误判为关闭\n- 默认 VideoCall 与仅 PiP 保活组合的内容更新由 60fps 调整为 30fps，减少后台刷新开销\n- 优化小屏首页布局，避免启动按钮被底栏遮挡\n- 新增当前 App 的运存和线程数显示\n- 修复线程统计资源未释放、离开帧率演示页后刷新驱动未清理的问题；PlayerLayer 兼容方案改为在后台准备视频素材，避免阻塞界面\n- 支持导出和分享诊断日志；减少日志重复写盘，覆盖更新后保留已有退出记录和系统诊断\n- 优化快捷指令链接识别，保留原有入口；修复切换更新渠道时可能显示旧结果的问题，支持检测同版本的新构建\n\n## 来源与署名\n\n感谢 CaiWanFeng 提供原始 PiP 示例。本项目由 Yoroin 在此基础上继续开发和维护。\n\n原 Demo 项目：[CaiWanFeng/PiP](https://github.com/CaiWanFeng/PiP)\n\n当前项目：[Yoroin/GlobalRefresh-PiP](https://github.com/Yoroin/GlobalRefresh-PiP)\n\n基于本项目继续开发或分发时，请保留原作者、后续维护者及对应项目地址，并注明代码来源。\n\n## 自签说明\n\n此 IPA 不绑定个人证书，主程序和内嵌框架均未签名，也不含 `embedded.mobileprovision` 或 `_CodeSignature`。安装前请使用自己的 Apple ID 或证书签名。\n",
           "minOSVersion": "15.0"
         }
-      ],
-      "appPermissions": {}
+      ]
     }
   ],
   "news": []
