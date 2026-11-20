@@ -26,18 +26,19 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Update source from latest stable release
+      - name: Check and update latest release
         run: python scripts/update_source.py
 
-      - name: Commit updated JSON
+      - name: Commit changed source and release state
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git add GlobalRefresh-PiP-AltStore-Source.json
+          git add globalrefresh-release-state.json
 
           if git diff --cached --quiet; then
-            echo "No update available."
+            echo "No new release. Nothing to commit."
           else
             git commit -m "Update GlobalRefresh source"
             git push
