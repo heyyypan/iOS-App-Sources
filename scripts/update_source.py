@@ -82,7 +82,7 @@ def inspect_ipa(ipa_path):
         plist_files = [
             name for name in archive.namelist()
             if re.fullmatch(
-                r"Payload/[^/]+\\.app/Info\\.plist",
+                r"Payload/[^/]+\.app/Info\.plist",
                 name
             )
         ]
