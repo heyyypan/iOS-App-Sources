@@ -9,11 +9,14 @@ import zipfile
 from datetime import datetime, timezone
 from pathlib import Path
 
-# 上游官方项目
+# 上游项目
 REPO = "Yoroin/GlobalRefresh-PiP"
 
-# 你的订阅 JSON
+# 订阅源文件
 OUTPUT = Path("GlobalRefresh-PiP-AltStore-Source.json")
+
+# 上次成功更新记录
+STATE = Path("globalrefresh-release-state.json")
 
 # GitHub 最新正式版 API
 API = f"https://api.github.com/repos/{REPO}/releases/latest"
@@ -21,6 +24,7 @@ API = f"https://api.github.com/repos/{REPO}/releases/latest"
 HEADERS = {
     "User-Agent": "heyyypan-iOS-App-Sources",
     "Accept": "application/vnd.github+json",
+    "X-GitHub-Api-Version": "2022-11-28",
 }
 
 
@@ -36,6 +40,9 @@ def get_latest_release():
     if release.get("draft") or release.get("prerelease"):
         raise RuntimeError("不是正式版，停止更新。")
 
+    if not release.get("id"):
+        raise RuntimeError("Release ID 不存在。")
+
     return release
 
 
@@ -48,7 +55,7 @@ def find_ipa(release):
     if not assets:
         raise RuntimeError("最新 Release 没有 IPA，保留旧 JSON。")
 
-    # 优先选择 unsigned 未签名 IPA
+    # 优先选择 unsigned IPA
     assets.sort(
         key=lambda item: (
             "unsigned" in item["name"].lower(),
@@ -60,12 +67,22 @@ def find_ipa(release):
     return assets[0]
 
 
+def load_state():
+    if not STATE.exists():
+        return {}
+
+    try:
+        return json.loads(STATE.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return {}
+
+
 def inspect_ipa(ipa_path):
     with zipfile.ZipFile(ipa_path) as archive:
         plist_files = [
             name for name in archive.namelist()
             if re.fullmatch(
-                r"Payload/[^/]+\.app/Info\.plist",
+                r"Payload/[^/]+\\.app/Info\\.plist",
                 name
             )
         ]
@@ -88,13 +105,38 @@ def inspect_ipa(ipa_path):
     return info
 
 
+def atomic_write(path, data):
+    temp_path = path.with_suffix(path.suffix + ".tmp")
+    temp_path.write_text(
+        json.dumps(data, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8"
+    )
+    temp_path.replace(path)
+
+
 def main():
     print("正在检查 GlobalRefresh 最新正式版...")
 
     release = get_latest_release()
     asset = find_ipa(release)
 
-    print("最新 Release：", release["tag_name"])
+    # 比较 Release ID 和 IPA 资源 ID
+    current_state = {
+        "release_id": release["id"],
+        "tag_name": release.get("tag_name", ""),
+        "asset_id": asset["id"],
+        "asset_updated_at": asset.get("updated_at", "")
+    }
+
+    old_state = load_state()
+
+    if old_state == current_state and OUTPUT.exists():
+        print("没有新版本，也没有新的 IPA 资源。")
+        print("跳过下载，JSON 保持不变。")
+        return
+
+    print("发现新版本或 IPA 资源发生变化！")
+    print("Release：", release.get("tag_name"))
     print("IPA：", asset["name"])
 
     with tempfile.TemporaryDirectory() as temp:
@@ -117,8 +159,8 @@ def main():
     )
 
     changelog = (
-        release.get("body") or
-        f"GlobalRefresh {version} 正式版更新"
+        release.get("body")
+        or f"GlobalRefresh {version} 正式版更新"
     )
 
     version_data = {
@@ -167,16 +209,15 @@ def main():
         "news": []
     }
 
-    OUTPUT.write_text(
-        json.dumps(source, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8"
-    )
+    # 先成功生成订阅源，再保存更新记录
+    atomic_write(OUTPUT, source)
+    atomic_write(STATE, current_state)
 
-    print("JSON 更新成功！")
+    print("订阅源更新成功！")
     print("版本：", version)
     print("Build：", build)
     print("Bundle ID：", bundle_id)
-    print("下载地址：", asset["browser_download_url"])
+    print("Release ID：", release["id"])
 
 
 if __name__ == "__main__":
