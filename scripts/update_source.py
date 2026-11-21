@@ -196,9 +196,9 @@ def main():
     }
 
     source = {
-        "name": "heyyypan iOS App Sources",
+        "name": "全局高刷",
         "identifier": "com.heyyypan.ios-app-sources",
-        "subtitle": "LiveContainer / SideStore 自动更新源",
+        "subtitle": "全局高刷自动更新源",
         "description": (
             "自动跟踪 Yoroin/GlobalRefresh-PiP 最新正式版。"
         ),
