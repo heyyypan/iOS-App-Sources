@@ -182,7 +182,7 @@ def main():
 
     app = {
         "name": "全局高刷",
-        "iconURL": "https://raw.githubusercontent.com/heyyypan/iOS-App-Sources/main/assets/globalrefresh-icon.png",
+        "iconURL": "https://raw.githubusercontent.com/Yoroin/GlobalRefresh-PiP/master/assets/app-icon.png",
         "bundleIdentifier": bundle_id,
         "developerName": "Yoroin",
         "subtitle": "全局高刷悬浮窗",
